@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { loadData, saveData, STATUS_CONFIG } from './data.js'
 import ImprovementModal from './ImprovementModal.jsx'
+import * as XLSX from 'xlsx'
 
 export default function App() {
   const [items, setItems] = useState(() => loadData())
@@ -138,6 +139,74 @@ export default function App() {
     e.target.value = ''
   }
 
+  // Exports all improvements as a .xlsx file (write-only — importing Excel is not supported).
+  // Uses SheetJS (xlsx). Note: xlsx has known vulnerabilities in its file *parser*, but we
+  // only use the write path here, so those vulnerabilities are not exposed.
+  function handleExportExcel() {
+    // Flatten each improvement into a plain object with human-readable column names.
+    // Multi-value fields (requirements, dependencies, business areas) are serialised as
+    // newline-separated strings so each improvement occupies exactly one row.
+    const rows = [...items].sort((a, b) => a.priority - b.priority).map(item => {
+      // Requirements may be plain strings (legacy) or {text, accepted} objects.
+      const reqs = (item.requirements || []).map(r =>
+        typeof r === 'string' ? r : (r.accepted ? `[Accepted] ${r.text}` : r.text)
+      )
+
+      // Resolve dependency IDs to readable labels; fall back to the raw ID if the
+      // referenced item has been deleted.
+      const deps = (item.dependencies || []).map(depId => {
+        const dep = items.find(i => i.id === depId)
+        return dep ? `#${dep.priority} ${dep.title}` : depId
+      })
+
+      // businessArea migrated from string → array; handle both shapes defensively.
+      const bizAreas = Array.isArray(item.businessArea)
+        ? item.businessArea
+        : item.businessArea ? [item.businessArea] : []
+
+      const acceptedCount = (item.requirements || []).filter(r => typeof r !== 'string' && r.accepted).length
+
+      return {
+        'Priority': item.priority,
+        'Title': item.title,
+        'Tagline': item.tagline || '',
+        'Status': STATUS_CONFIG[item.status]?.label ?? item.status,
+        'Area': item.area || '',
+        'Subarea': item.subarea || '',
+        'Business Area': bizAreas.join(', '),
+        'Responsibility': item.responsibility || '',
+        'Problem Statement': item.description || '',
+        'Requirements': reqs.join('\n'),
+        'Requirements Total': (item.requirements || []).length,
+        'Requirements Accepted': acceptedCount,
+        'Dependencies': deps.join('\n'),
+        'Created': item.createdAt || '',
+      }
+    })
+
+    const ws = XLSX.utils.json_to_sheet(rows)
+    // wch = column width in characters; order matches the key order of the row objects above.
+    ws['!cols'] = [
+      { wch: 8 },  // Priority
+      { wch: 40 }, // Title
+      { wch: 50 }, // Tagline
+      { wch: 12 }, // Status
+      { wch: 16 }, // Area
+      { wch: 16 }, // Subarea
+      { wch: 24 }, // Business Area
+      { wch: 20 }, // Responsibility
+      { wch: 50 }, // Problem Statement
+      { wch: 50 }, // Requirements
+      { wch: 10 }, // Requirements Total
+      { wch: 10 }, // Requirements Accepted
+      { wch: 40 }, // Dependencies
+      { wch: 12 }, // Created
+    ]
+    const wb = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(wb, ws, 'Improvements')
+    XLSX.writeFile(wb, `improvements-${new Date().toISOString().slice(0, 10)}.xlsx`)
+  }
+
   return (
     <div style={s.app}>
       {/* Header */}
@@ -148,6 +217,7 @@ export default function App() {
             <p style={s.subtitle}>{items.length} improvements tracked · sorted by absolute priority</p>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <button style={s.exportBtn} onClick={handleExportExcel}>↓ Export Excel</button>
             <button style={s.exportBtn} onClick={handleExport}>↓ Export JSON</button>
             <label style={s.importBtn}>
               ↑ Import JSON
