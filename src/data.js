@@ -1,7 +1,7 @@
 export const STATUS_CONFIG = {
-  not_started: { label: 'Not Started', color: '#64748b', bg: '#f8fafc', border: '#cbd5e1', emoji: '⚪' },
-  ongoing:     { label: 'Ongoing',     color: '#d69e2e', bg: '#fffff0', border: '#f6e05e', emoji: '🟡' },
-  blocked:     { label: 'Blocked',     color: '#e53e3e', bg: '#fff5f5', border: '#fc8181', emoji: '🔴' },
+  listed:    { label: 'Listed',    color: '#1e40af', bg: '#eff6ff', border: '#bfdbfe', emoji: '🔵' },
+  committed: { label: 'Committed', color: '#1d4ed8', bg: '#dbeafe', border: '#93c5fd', emoji: '🔷' },
+  done:      { label: 'Done',      color: '#1e3a8a', bg: '#bfdbfe', border: '#3b82f6', emoji: '💙' },
 }
 
 export const SAMPLE_DATA = [
@@ -13,7 +13,7 @@ export const SAMPLE_DATA = [
     description: 'Build a comprehensive automated regression suite covering all critical user flows.',
     area: 'Quality',
     subarea: 'Test Automation',
-    status: 'ongoing',
+    status: 'committed',
     businessArea: 'Customer Experience',
     responsibility: 'QA Team',
     requirements: [
@@ -32,7 +32,7 @@ export const SAMPLE_DATA = [
     description: 'Reduce failed deployments and add automatic rollback capability.',
     area: 'Engineering',
     subarea: 'DevOps',
-    status: 'blocked',
+    status: 'listed',
     businessArea: 'Operations',
     responsibility: 'Platform Team',
     requirements: [
@@ -50,7 +50,7 @@ export const SAMPLE_DATA = [
     description: 'Simplify the user onboarding to increase activation rate.',
     area: 'Product',
     subarea: 'UX',
-    status: 'not_started',
+    status: 'done',
     businessArea: 'Growth',
     responsibility: 'Product Team',
     requirements: [

@@ -7,7 +7,7 @@ const EMPTY = {
   description: '',
   area: '',
   subarea: '',
-  status: 'not_started',
+  status: 'listed',
   businessArea: '',
   responsibility: '',
   requirements: [],
