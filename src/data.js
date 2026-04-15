@@ -67,10 +67,26 @@ export function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2)
 }
 
+const STATUS_MIGRATION = {
+  // original traffic-light keys
+  green:       'done',
+  yellow:      'committed',
+  red:         'listed',
+  // intermediate keys
+  not_started: 'listed',
+  ongoing:     'committed',
+  blocked:     'listed',
+}
+
 export function loadData() {
   try {
     const raw = localStorage.getItem('improvements')
-    return raw ? JSON.parse(raw) : SAMPLE_DATA
+    if (!raw) return SAMPLE_DATA
+    const items = JSON.parse(raw)
+    return items.map(item => ({
+      ...item,
+      status: STATUS_CONFIG[item.status] ? item.status : (STATUS_MIGRATION[item.status] ?? 'listed'),
+    }))
   } catch {
     return SAMPLE_DATA
   }
