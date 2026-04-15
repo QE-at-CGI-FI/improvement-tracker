@@ -14,7 +14,7 @@ export const SAMPLE_DATA = [
     area: 'Quality',
     subarea: 'Test Automation',
     status: 'committed',
-    businessArea: 'Customer Experience',
+    businessArea: ['Customer Experience'],
     responsibility: 'QA Team',
     requirements: [
       'Cover all P0 user journeys',
@@ -34,7 +34,7 @@ export const SAMPLE_DATA = [
     area: 'Engineering',
     subarea: 'DevOps',
     status: 'listed',
-    businessArea: 'Operations',
+    businessArea: ['Operations'],
     responsibility: 'Platform Team',
     requirements: [
       'Zero-downtime deployments',
@@ -53,7 +53,7 @@ export const SAMPLE_DATA = [
     area: 'Product',
     subarea: 'UX',
     status: 'done',
-    businessArea: 'Growth',
+    businessArea: ['Growth'],
     responsibility: 'Product Team',
     requirements: [
       'Reduce steps from 8 to 4',
@@ -90,6 +90,9 @@ export function loadData() {
       ...item,
       status: STATUS_CONFIG[item.status] ? item.status : (STATUS_MIGRATION[item.status] ?? 'listed'),
       dependencies: item.dependencies ?? [],
+      businessArea: Array.isArray(item.businessArea)
+        ? item.businessArea
+        : item.businessArea ? [item.businessArea] : [],
     }))
   } catch {
     return SAMPLE_DATA

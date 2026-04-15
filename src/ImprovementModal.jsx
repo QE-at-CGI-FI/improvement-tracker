@@ -8,7 +8,7 @@ const EMPTY = {
   area: '',
   subarea: '',
   status: 'listed',
-  businessArea: '',
+  businessArea: [],
   responsibility: '',
   requirements: [],
   dependencies: [],
@@ -17,6 +17,7 @@ const EMPTY = {
 export default function ImprovementModal({ item, maxPriority, allItems, onSave, onClose }) {
   const [form, setForm] = useState(EMPTY)
   const [reqInput, setReqInput] = useState('')
+  const [bizInput, setBizInput] = useState('')
   const [depSearch, setDepSearch] = useState('')
 
   useEffect(() => {
@@ -37,6 +38,17 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
 
   function removeReq(i) {
     setForm(f => ({ ...f, requirements: f.requirements.filter((_, idx) => idx !== i) }))
+  }
+
+  function addBiz() {
+    const trimmed = bizInput.trim()
+    if (!trimmed || form.businessArea.includes(trimmed)) return
+    setForm(f => ({ ...f, businessArea: [...f.businessArea, trimmed] }))
+    setBizInput('')
+  }
+
+  function removeBiz(i) {
+    setForm(f => ({ ...f, businessArea: f.businessArea.filter((_, idx) => idx !== i) }))
   }
 
   function addDep(id) {
@@ -92,7 +104,24 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
             </Field>
 
             <Field label="Business Area">
-              <input style={styles.input} value={form.businessArea} onChange={e => set('businessArea', e.target.value)} placeholder="e.g. Operations" />
+              <div style={styles.reqArea}>
+                {form.businessArea.map((tag, i) => (
+                  <div key={i} style={styles.reqTag}>
+                    <span>{tag}</span>
+                    <button type="button" style={styles.reqRemove} onClick={() => removeBiz(i)}>✕</button>
+                  </div>
+                ))}
+                <div style={styles.reqInputRow}>
+                  <input
+                    style={{ ...styles.input, flex: 1 }}
+                    value={bizInput}
+                    onChange={e => setBizInput(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addBiz())}
+                    placeholder="Add a business area and press Enter"
+                  />
+                  <button type="button" style={styles.addReqBtn} onClick={addBiz}>Add</button>
+                </div>
+              </div>
             </Field>
             <Field label="Organizational Responsibility">
               <input style={styles.input} value={form.responsibility} onChange={e => set('responsibility', e.target.value)} placeholder="e.g. Platform Team" />

@@ -17,7 +17,7 @@ export default function App() {
   // Derived filter options
   const areas = useMemo(() => [...new Set(items.map(i => i.area).filter(Boolean))].sort(), [items])
   const subareas = useMemo(() => [...new Set(items.filter(i => !filters.area || i.area === filters.area).map(i => i.subarea).filter(Boolean))].sort(), [items, filters.area])
-  const businessAreas = useMemo(() => [...new Set(items.map(i => i.businessArea).filter(Boolean))].sort(), [items])
+  const businessAreas = useMemo(() => [...new Set(items.flatMap(i => Array.isArray(i.businessArea) ? i.businessArea : i.businessArea ? [i.businessArea] : []))].sort(), [items])
   const responsibilities = useMemo(() => [...new Set(items.map(i => i.responsibility).filter(Boolean))].sort(), [items])
 
   const filtered = useMemo(() => {
@@ -25,10 +25,10 @@ export default function App() {
       .filter(i => {
         if (filters.area && i.area !== filters.area) return false
         if (filters.subarea && i.subarea !== filters.subarea) return false
-        if (filters.businessArea && i.businessArea !== filters.businessArea) return false
+        if (filters.businessArea && !(Array.isArray(i.businessArea) ? i.businessArea : i.businessArea ? [i.businessArea] : []).includes(filters.businessArea)) return false
         if (filters.responsibility && i.responsibility !== filters.responsibility) return false
         if (filters.status && i.status !== filters.status) return false
-        if (search && !`${i.title} ${i.description} ${i.area} ${i.subarea} ${i.businessArea} ${i.responsibility}`.toLowerCase().includes(search.toLowerCase())) return false
+        if (search && !`${i.title} ${i.description} ${i.area} ${i.subarea} ${(Array.isArray(i.businessArea) ? i.businessArea : [i.businessArea]).join(' ')} ${i.responsibility}`.toLowerCase().includes(search.toLowerCase())) return false
         return true
       })
       .sort((a, b) => a.priority - b.priority)
@@ -254,7 +254,9 @@ export default function App() {
                     {item.subarea && <span style={{ ...s.tag, background: '#F3F0F9', color: '#4C2C92' }}>{item.subarea}</span>}
                   </td>
                   <td style={s.td}>
-                    {item.businessArea && <span style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>{item.businessArea}</span>}
+                    {(Array.isArray(item.businessArea) ? item.businessArea : item.businessArea ? [item.businessArea] : []).map((ba, i) => (
+                      <span key={i} style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>{ba}</span>
+                    ))}
                   </td>
                   <td style={s.td}>
                     {item.responsibility && <span style={{ ...s.tag, background: '#E8E0F3', color: '#4C2C92' }}>{item.responsibility}</span>}
@@ -369,7 +371,9 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
             <StatusBadge cfg={cfg} />
             {item.area && <span style={s.tag}>{item.area}</span>}
             {item.subarea && <span style={{ ...s.tag, background: '#F3F0F9', color: '#4C2C92' }}>{item.subarea}</span>}
-            {item.businessArea && <span style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>Biz: {item.businessArea}</span>}
+            {(Array.isArray(item.businessArea) ? item.businessArea : item.businessArea ? [item.businessArea] : []).map((ba, i) => (
+              <span key={i} style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>Biz: {ba}</span>
+            ))}
             {item.responsibility && <span style={{ ...s.tag, background: '#E8E0F3', color: '#4C2C92' }}>Owner: {item.responsibility}</span>}
           </div>
 
