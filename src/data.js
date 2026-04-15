@@ -17,10 +17,10 @@ export const SAMPLE_DATA = [
     businessArea: ['Customer Experience'],
     responsibility: 'QA Team',
     requirements: [
-      'Cover all P0 user journeys',
-      'Run in CI on every PR',
-      'Report flakiness metrics',
-      'Execution time under 10 minutes',
+      { text: 'Cover all P0 user journeys', accepted: false },
+      { text: 'Run in CI on every PR', accepted: false },
+      { text: 'Report flakiness metrics', accepted: false },
+      { text: 'Execution time under 10 minutes', accepted: false },
     ],
     dependencies: [],
     createdAt: '2026-01-10',
@@ -37,9 +37,9 @@ export const SAMPLE_DATA = [
     businessArea: ['Operations'],
     responsibility: 'Platform Team',
     requirements: [
-      'Zero-downtime deployments',
-      'Automated rollback on error spike',
-      'Deployment success rate > 99%',
+      { text: 'Zero-downtime deployments', accepted: false },
+      { text: 'Automated rollback on error spike', accepted: false },
+      { text: 'Deployment success rate > 99%', accepted: false },
     ],
     dependencies: [],
     createdAt: '2026-01-15',
@@ -56,10 +56,10 @@ export const SAMPLE_DATA = [
     businessArea: ['Growth'],
     responsibility: 'Product Team',
     requirements: [
-      'Reduce steps from 8 to 4',
-      'Add progress indicator',
-      'Contextual help tooltips',
-      'A/B test new vs old flow',
+      { text: 'Reduce steps from 8 to 4', accepted: false },
+      { text: 'Add progress indicator', accepted: false },
+      { text: 'Contextual help tooltips', accepted: false },
+      { text: 'A/B test new vs old flow', accepted: false },
     ],
     dependencies: [],
     createdAt: '2026-02-01',
@@ -90,6 +90,9 @@ export function loadData() {
       ...item,
       status: STATUS_CONFIG[item.status] ? item.status : (STATUS_MIGRATION[item.status] ?? 'listed'),
       dependencies: item.dependencies ?? [],
+      requirements: (item.requirements ?? []).map(r =>
+        typeof r === 'string' ? { text: r, accepted: false } : r
+      ),
       businessArea: Array.isArray(item.businessArea)
         ? item.businessArea
         : item.businessArea ? [item.businessArea] : [],

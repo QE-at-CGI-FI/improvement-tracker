@@ -394,12 +394,16 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
             <div style={{ marginBottom: 20 }}>
               <h4 style={s.sectionLabel}>Requirements ({item.requirements.length})</h4>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
-                {item.requirements.map((r, i) => (
-                  <li key={i} style={s.reqItem}>
-                    <span style={{ color: cfg.color, fontSize: 16 }}>◆</span>
-                    <span style={{ fontSize: 14 }}>{r}</span>
-                  </li>
-                ))}
+                {item.requirements.map((r, i) => {
+                  const text = typeof r === 'string' ? r : r.text
+                  const accepted = typeof r === 'string' ? false : r.accepted
+                  return (
+                    <li key={i} style={s.reqItem}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: accepted ? '#166534' : '#94a3b8', flexShrink: 0 }}>{accepted ? '✓' : '○'}</span>
+                      <span style={{ fontSize: 14, textDecoration: accepted ? 'line-through' : 'none', color: accepted ? '#94a3b8' : 'inherit' }}>{text}</span>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           )}

@@ -32,12 +32,16 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
   function addReq() {
     const trimmed = reqInput.trim()
     if (!trimmed) return
-    setForm(f => ({ ...f, requirements: [...f.requirements, trimmed] }))
+    setForm(f => ({ ...f, requirements: [...f.requirements, { text: trimmed, accepted: false }] }))
     setReqInput('')
   }
 
   function removeReq(i) {
     setForm(f => ({ ...f, requirements: f.requirements.filter((_, idx) => idx !== i) }))
+  }
+
+  function toggleReqAccepted(i) {
+    setForm(f => ({ ...f, requirements: f.requirements.map((r, idx) => idx === i ? { ...r, accepted: !r.accepted } : r) }))
   }
 
   function addBiz() {
@@ -147,7 +151,15 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
               <div style={styles.reqArea}>
                 {form.requirements.map((r, i) => (
                   <div key={i} style={styles.reqTag}>
-                    <span>{r}</span>
+                    <button
+                      type="button"
+                      onClick={() => toggleReqAccepted(i)}
+                      style={{ ...styles.reqAccepted, background: r.accepted ? '#dcfce7' : '#f1f5f9', color: r.accepted ? '#166534' : '#94a3b8', borderColor: r.accepted ? '#86efac' : '#e2e8f0' }}
+                      title={r.accepted ? 'Accepted' : 'Not accepted'}
+                    >
+                      {r.accepted ? '✓' : '○'}
+                    </button>
+                    <span style={{ flex: 1, textDecoration: r.accepted ? 'line-through' : 'none', color: r.accepted ? '#94a3b8' : 'inherit' }}>{r.text}</span>
                     <button type="button" style={styles.reqRemove} onClick={() => removeReq(i)}>✕</button>
                   </div>
                 ))}
@@ -275,6 +287,12 @@ const styles = {
   reqRemove: {
     background: 'none', border: 'none', cursor: 'pointer',
     color: '#a0aec0', fontSize: 12, padding: '0 0 0 8px',
+  },
+  reqAccepted: {
+    border: '1.5px solid', borderRadius: 4, cursor: 'pointer',
+    fontSize: 12, fontWeight: 700, width: 22, height: 22,
+    display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+    padding: 0, flexShrink: 0, marginRight: 8,
   },
   reqInputRow: { display: 'flex', gap: 8 },
   depDropdown: {
