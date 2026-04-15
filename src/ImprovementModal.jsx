@@ -110,8 +110,8 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
               </div>
             </Field>
 
-            <Field label="Description" span={2}>
-              <textarea style={{ ...styles.input, height: 80, resize: 'vertical' }} value={form.description} onChange={e => set('description', e.target.value)} placeholder="Describe the improvement..." />
+            <Field label="Problem statement" span={2}>
+              <textarea style={{ ...styles.input, height: 80, resize: 'vertical' }} value={form.description} onChange={e => set('description', e.target.value)} placeholder="Describe the problem this improvement addresses..." />
             </Field>
 
             <Field label="Requirements" span={2}>

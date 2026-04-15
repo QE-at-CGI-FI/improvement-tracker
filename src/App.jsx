@@ -381,7 +381,7 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
 
           {item.description && (
             <div style={{ marginBottom: 20 }}>
-              <h4 style={s.sectionLabel}>Description</h4>
+              <h4 style={s.sectionLabel}>Problem statement</h4>
               <p style={{ fontSize: 14, color: '#4a5568', lineHeight: 1.6 }}>{item.description}</p>
             </div>
           )}
