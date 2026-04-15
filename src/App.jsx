@@ -48,9 +48,11 @@ export default function App() {
   function handleDelete(id) {
     setItems(prev => {
       const removed = prev.find(i => i.id === id)
-      return prev.filter(i => i.id !== id).map(i =>
-        i.priority > removed.priority ? { ...i, priority: i.priority - 1 } : i
-      )
+      return prev.filter(i => i.id !== id).map(i => ({
+        ...i,
+        priority: i.priority > removed.priority ? i.priority - 1 : i.priority,
+        dependencies: (i.dependencies || []).filter(d => d !== id),
+      }))
     })
     setConfirmDelete(null)
     setDetail(null)
@@ -216,12 +218,13 @@ export default function App() {
               <th style={{ ...s.th, width: 140 }}>Responsibility</th>
               <th style={{ ...s.th, width: 110 }}>Status</th>
               <th style={{ ...s.th, width: 90 }}>Reqs</th>
+              <th style={{ ...s.th, width: 90 }}>Blocked by</th>
               <th style={{ ...s.th, width: 90 }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr><td colSpan={8} style={s.empty}>No improvements match the current filters.</td></tr>
+              <tr><td colSpan={9} style={s.empty}>No improvements match the current filters.</td></tr>
             )}
             {filtered.map((item, idx) => {
               const cfg = STATUS_CONFIG[item.status]
@@ -265,6 +268,19 @@ export default function App() {
                     )}
                   </td>
                   <td style={s.tdCenter}>
+                    {(item.dependencies || []).length > 0 && (() => {
+                      const unmet = (item.dependencies || []).filter(depId => {
+                        const dep = items.find(i => i.id === depId)
+                        return dep && dep.status !== 'done'
+                      })
+                      return (
+                        <span style={{ ...s.reqCount, background: unmet.length > 0 ? '#fef3c7' : '#dcfce7', color: unmet.length > 0 ? '#92400e' : '#166534' }}>
+                          {item.dependencies.length}
+                        </span>
+                      )
+                    })()}
+                  </td>
+                  <td style={s.tdCenter}>
                     <div style={s.actions}>
                       <button style={s.iconBtn} title="Move up" onClick={() => moveUp(item.id)} disabled={item.priority === 1}>↑</button>
                       <button style={s.iconBtn} title="Move down" onClick={() => moveDown(item.id)} disabled={item.priority === maxPriority}>↓</button>
@@ -283,6 +299,7 @@ export default function App() {
       {detail && (
         <DetailPanel
           item={detail}
+          allItems={items}
           onEdit={() => { setModal(detail); setDetail(null) }}
           onDelete={() => setConfirmDelete(detail)}
           onClose={() => setDetail(null)}
@@ -294,6 +311,7 @@ export default function App() {
         <ImprovementModal
           item={modal === 'new' ? null : modal}
           maxPriority={maxPriority}
+          allItems={items}
           onSave={handleSave}
           onClose={() => setModal(null)}
         />
@@ -333,7 +351,7 @@ function StatusBadge({ cfg }) {
   )
 }
 
-function DetailPanel({ item, onEdit, onDelete, onClose }) {
+function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
   const cfg = STATUS_CONFIG[item.status]
   return (
     <div style={s.overlay} onClick={e => e.target === e.currentTarget && onClose()}>
@@ -378,6 +396,26 @@ function DetailPanel({ item, onEdit, onDelete, onClose }) {
                     <span style={{ fontSize: 14 }}>{r}</span>
                   </li>
                 ))}
+              </ul>
+            </div>
+          )}
+
+          {(item.dependencies || []).length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <h4 style={s.sectionLabel}>Depends on ({item.dependencies.length})</h4>
+              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {item.dependencies.map(depId => {
+                  const dep = (allItems || []).find(i => i.id === depId)
+                  const depCfg = dep ? STATUS_CONFIG[dep.status] : null
+                  return (
+                    <li key={depId} style={{ ...s.reqItem, justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: 14 }}>
+                        {dep ? <><span style={{ fontWeight: 600 }}>#{dep.priority}</span> {dep.title}</> : <span style={{ color: '#a0aec0' }}>Removed item</span>}
+                      </span>
+                      {depCfg && <span style={{ fontSize: 11, fontWeight: 600, color: depCfg.color, background: depCfg.bg, border: `1px solid ${depCfg.border}`, borderRadius: 10, padding: '2px 8px', whiteSpace: 'nowrap' }}>{depCfg.label}</span>}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           )}

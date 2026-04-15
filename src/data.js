@@ -22,6 +22,7 @@ export const SAMPLE_DATA = [
       'Report flakiness metrics',
       'Execution time under 10 minutes',
     ],
+    dependencies: [],
     createdAt: '2026-01-10',
   },
   {
@@ -40,6 +41,7 @@ export const SAMPLE_DATA = [
       'Automated rollback on error spike',
       'Deployment success rate > 99%',
     ],
+    dependencies: [],
     createdAt: '2026-01-15',
   },
   {
@@ -59,6 +61,7 @@ export const SAMPLE_DATA = [
       'Contextual help tooltips',
       'A/B test new vs old flow',
     ],
+    dependencies: [],
     createdAt: '2026-02-01',
   },
 ]
@@ -86,6 +89,7 @@ export function loadData() {
     return items.map(item => ({
       ...item,
       status: STATUS_CONFIG[item.status] ? item.status : (STATUS_MIGRATION[item.status] ?? 'listed'),
+      dependencies: item.dependencies ?? [],
     }))
   } catch {
     return SAMPLE_DATA

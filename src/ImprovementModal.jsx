@@ -11,11 +11,13 @@ const EMPTY = {
   businessArea: '',
   responsibility: '',
   requirements: [],
+  dependencies: [],
 }
 
-export default function ImprovementModal({ item, maxPriority, onSave, onClose }) {
+export default function ImprovementModal({ item, maxPriority, allItems, onSave, onClose }) {
   const [form, setForm] = useState(EMPTY)
   const [reqInput, setReqInput] = useState('')
+  const [depSearch, setDepSearch] = useState('')
 
   useEffect(() => {
     if (item) setForm({ ...item })
@@ -36,6 +38,22 @@ export default function ImprovementModal({ item, maxPriority, onSave, onClose })
   function removeReq(i) {
     setForm(f => ({ ...f, requirements: f.requirements.filter((_, idx) => idx !== i) }))
   }
+
+  function addDep(id) {
+    if (form.dependencies.includes(id)) return
+    setForm(f => ({ ...f, dependencies: [...f.dependencies, id] }))
+    setDepSearch('')
+  }
+
+  function removeDep(id) {
+    setForm(f => ({ ...f, dependencies: f.dependencies.filter(d => d !== id) }))
+  }
+
+  const availableDeps = (allItems || []).filter(i =>
+    i.id !== item?.id &&
+    !form.dependencies.includes(i.id) &&
+    (depSearch === '' || i.title.toLowerCase().includes(depSearch.toLowerCase()))
+  )
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -116,6 +134,54 @@ export default function ImprovementModal({ item, maxPriority, onSave, onClose })
                 </div>
               </div>
             </Field>
+
+            <Field label="Depends on (must be done first)" span={2}>
+              <div style={styles.reqArea}>
+                {form.dependencies.map(depId => {
+                  const dep = (allItems || []).find(i => i.id === depId)
+                  const cfg = dep ? STATUS_CONFIG[dep.status] : null
+                  return (
+                    <div key={depId} style={styles.reqTag}>
+                      <span style={{ flex: 1, fontSize: 13 }}>
+                        {dep ? (
+                          <>
+                            <span style={{ fontWeight: 600 }}>{dep.title}</span>
+                            {cfg && <span style={{ marginLeft: 8, fontSize: 11, color: cfg.color, background: cfg.bg, border: `1px solid ${cfg.border}`, borderRadius: 10, padding: '1px 7px' }}>{cfg.label}</span>}
+                          </>
+                        ) : <span style={{ color: '#a0aec0' }}>Unknown item</span>}
+                      </span>
+                      <button type="button" style={styles.reqRemove} onClick={() => removeDep(depId)}>✕</button>
+                    </div>
+                  )
+                })}
+                <div style={{ position: 'relative' }}>
+                  <input
+                    style={{ ...styles.input }}
+                    value={depSearch}
+                    onChange={e => setDepSearch(e.target.value)}
+                    placeholder="Search improvements to add as dependency..."
+                  />
+                  {depSearch && availableDeps.length > 0 && (
+                    <div style={styles.depDropdown}>
+                      {availableDeps.slice(0, 8).map(i => {
+                        const cfg = STATUS_CONFIG[i.status]
+                        return (
+                          <button key={i.id} type="button" style={styles.depOption} onClick={() => addDep(i.id)}>
+                            <span style={{ fontWeight: 600, fontSize: 13 }}>#{i.priority} {i.title}</span>
+                            {cfg && <span style={{ marginLeft: 8, fontSize: 11, color: cfg.color }}>{cfg.label}</span>}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  )}
+                  {depSearch && availableDeps.length === 0 && (
+                    <div style={styles.depDropdown}>
+                      <div style={{ padding: '8px 12px', color: '#a0aec0', fontSize: 13 }}>No matches</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </Field>
           </div>
 
           <div style={styles.footer}>
@@ -182,6 +248,16 @@ const styles = {
     color: '#a0aec0', fontSize: 12, padding: '0 0 0 8px',
   },
   reqInputRow: { display: 'flex', gap: 8 },
+  depDropdown: {
+    position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 100,
+    background: '#fff', border: '1.5px solid #e2e8f0', borderRadius: 6,
+    boxShadow: '0 4px 16px rgba(0,0,0,0.12)', marginTop: 2, maxHeight: 240, overflowY: 'auto',
+  },
+  depOption: {
+    display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px',
+    background: 'none', border: 'none', cursor: 'pointer', fontSize: 13,
+    borderBottom: '1px solid #f1f5f9',
+  },
   addReqBtn: {
     padding: '8px 16px', background: '#eef2ff', color: '#4f46e5',
     border: '1.5px solid #c7d2fe', borderRadius: 6, cursor: 'pointer',
