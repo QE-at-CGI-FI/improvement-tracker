@@ -1,7 +1,7 @@
 export const STATUS_CONFIG = {
-  red:    { label: 'Blocked',     color: '#e53e3e', bg: '#fff5f5', border: '#fc8181', emoji: '🔴' },
-  yellow: { label: 'In Progress', color: '#d69e2e', bg: '#fffff0', border: '#f6e05e', emoji: '🟡' },
-  green:  { label: 'Done',        color: '#38a169', bg: '#f0fff4', border: '#68d391', emoji: '🟢' },
+  not_started: { label: 'Not Started', color: '#64748b', bg: '#f8fafc', border: '#cbd5e1', emoji: '⚪' },
+  ongoing:     { label: 'Ongoing',     color: '#d69e2e', bg: '#fffff0', border: '#f6e05e', emoji: '🟡' },
+  blocked:     { label: 'Blocked',     color: '#e53e3e', bg: '#fff5f5', border: '#fc8181', emoji: '🔴' },
 }
 
 export const SAMPLE_DATA = [
@@ -9,10 +9,11 @@ export const SAMPLE_DATA = [
     id: '1',
     priority: 1,
     title: 'Automated regression test suite',
+    tagline: 'Stop shipping bugs that tests would catch',
     description: 'Build a comprehensive automated regression suite covering all critical user flows.',
     area: 'Quality',
     subarea: 'Test Automation',
-    status: 'yellow',
+    status: 'ongoing',
     businessArea: 'Customer Experience',
     responsibility: 'QA Team',
     requirements: [
@@ -27,10 +28,11 @@ export const SAMPLE_DATA = [
     id: '2',
     priority: 2,
     title: 'Improve deployment pipeline reliability',
+    tagline: 'Every failed deploy costs us trust and recovery time',
     description: 'Reduce failed deployments and add automatic rollback capability.',
     area: 'Engineering',
     subarea: 'DevOps',
-    status: 'red',
+    status: 'blocked',
     businessArea: 'Operations',
     responsibility: 'Platform Team',
     requirements: [
@@ -44,10 +46,11 @@ export const SAMPLE_DATA = [
     id: '3',
     priority: 3,
     title: 'Onboarding flow redesign',
+    tagline: 'Users who get stuck on day one never come back',
     description: 'Simplify the user onboarding to increase activation rate.',
     area: 'Product',
     subarea: 'UX',
-    status: 'green',
+    status: 'not_started',
     businessArea: 'Growth',
     responsibility: 'Product Team',
     requirements: [

@@ -3,10 +3,11 @@ import { STATUS_CONFIG, generateId } from './data.js'
 
 const EMPTY = {
   title: '',
+  tagline: '',
   description: '',
   area: '',
   subarea: '',
-  status: 'yellow',
+  status: 'not_started',
   businessArea: '',
   responsibility: '',
   requirements: [],
@@ -59,6 +60,10 @@ export default function ImprovementModal({ item, maxPriority, onSave, onClose })
           <div style={styles.grid2}>
             <Field label="Title *" span={2}>
               <input style={styles.input} value={form.title} onChange={e => set('title', e.target.value)} placeholder="Improvement title" required />
+            </Field>
+
+            <Field label="Tagline — the why" span={2}>
+              <input style={styles.input} value={form.tagline} onChange={e => set('tagline', e.target.value)} placeholder="One sentence: why does this matter?" />
             </Field>
 
             <Field label="Area">

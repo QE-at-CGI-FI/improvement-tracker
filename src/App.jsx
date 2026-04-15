@@ -108,6 +108,34 @@ export default function App() {
   const hasFilters = search || Object.values(filters).some(Boolean)
   const maxPriority = items.length > 0 ? Math.max(...items.map(i => i.priority)) : 0
 
+  function handleExport() {
+    const json = JSON.stringify(items, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `improvements-${new Date().toISOString().slice(0, 10)}.json`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  function handleImport(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = evt => {
+      try {
+        const parsed = JSON.parse(evt.target.result)
+        if (!Array.isArray(parsed)) throw new Error('Expected an array')
+        setItems(parsed)
+      } catch {
+        alert('Invalid file: must be a JSON array of improvements exported from this app.')
+      }
+    }
+    reader.readAsText(file)
+    e.target.value = ''
+  }
+
   return (
     <div style={s.app}>
       {/* Header */}
@@ -117,7 +145,14 @@ export default function App() {
             <h1 style={s.h1}>Improvement Backlog</h1>
             <p style={s.subtitle}>{items.length} improvements tracked · sorted by absolute priority</p>
           </div>
-          <button style={s.newBtn} onClick={() => setModal('new')}>+ New Improvement</button>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <button style={s.exportBtn} onClick={handleExport}>↓ Export JSON</button>
+            <label style={s.importBtn}>
+              ↑ Import JSON
+              <input type="file" accept="application/json,.json" onChange={handleImport} style={{ display: 'none' }} />
+            </label>
+            <button style={s.newBtn} onClick={() => setModal('new')}>+ New Improvement</button>
+          </div>
         </div>
       </header>
 
@@ -208,6 +243,7 @@ export default function App() {
                     <button style={s.titleBtn} onClick={() => setDetail(item)}>
                       {item.title}
                     </button>
+                    {item.tagline && <div style={s.tagline}>{item.tagline}</div>}
                     {item.description && <div style={s.desc}>{item.description.slice(0, 80)}{item.description.length > 80 ? '…' : ''}</div>}
                   </td>
                   <td style={s.td}>
@@ -319,6 +355,12 @@ function DetailPanel({ item, onEdit, onDelete, onClose }) {
             {item.responsibility && <span style={{ ...s.tag, background: '#ede9fe', color: '#5b21b6' }}>Owner: {item.responsibility}</span>}
           </div>
 
+          {item.tagline && (
+            <div style={{ marginBottom: 16, padding: '10px 14px', background: '#f8fafc', borderLeft: '3px solid #4f46e5', borderRadius: 4 }}>
+              <p style={{ fontSize: 14, color: '#4f46e5', fontStyle: 'italic', fontWeight: 500 }}>{item.tagline}</p>
+            </div>
+          )}
+
           {item.description && (
             <div style={{ marginBottom: 20 }}>
               <h4 style={s.sectionLabel}>Description</h4>
@@ -359,6 +401,8 @@ const s = {
   h1: { fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px' },
   subtitle: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
   newBtn: { background: '#4f46e5', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 14, fontWeight: 700, cursor: 'pointer' },
+  exportBtn: { background: 'none', color: '#94a3b8', border: '1.5px solid #334155', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer' },
+  importBtn: { background: 'none', color: '#94a3b8', border: '1.5px solid #334155', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'inline-block' },
 
   filtersBar: { background: '#fff', borderBottom: '1px solid #e2e8f0', padding: '12px 24px', display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', maxWidth: '100%' },
   search: { padding: '8px 14px', border: '1.5px solid #e2e8f0', borderRadius: 6, fontSize: 14, minWidth: 200, outline: 'none' },
@@ -381,7 +425,8 @@ const s = {
   priorityLarge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', background: '#1a1a2e', color: '#fff', fontSize: 14, fontWeight: 700 },
 
   titleBtn: { background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#1a1a2e', textAlign: 'left', padding: 0, display: 'block' },
-  desc: { fontSize: 12, color: '#718096', marginTop: 4, lineHeight: 1.5 },
+  tagline: { fontSize: 12, color: '#4f46e5', fontStyle: 'italic', marginTop: 3, lineHeight: 1.4 },
+  desc: { fontSize: 12, color: '#718096', marginTop: 2, lineHeight: 1.5 },
 
   tag: { display: 'inline-block', fontSize: 11, fontWeight: 600, background: '#f1f5f9', color: '#475569', borderRadius: 4, padding: '2px 8px', marginRight: 4, marginBottom: 4 },
 
