@@ -1,7 +1,7 @@
 export const STATUS_CONFIG = {
-  listed:    { label: 'Listed',    color: '#1e40af', bg: '#eff6ff', border: '#bfdbfe', emoji: '🔵' },
-  committed: { label: 'Committed', color: '#1d4ed8', bg: '#dbeafe', border: '#93c5fd', emoji: '🔷' },
-  done:      { label: 'Done',      color: '#1e3a8a', bg: '#bfdbfe', border: '#3b82f6', emoji: '💙' },
+  listed:    { label: 'Listed',    color: '#6B4FA0', bg: '#F3F0F9', border: '#D4C6E8', emoji: '🟣' },
+  committed: { label: 'Committed', color: '#4C2C92', bg: '#E8E0F3', border: '#B89CD9', emoji: '🔮' },
+  done:      { label: 'Done',      color: '#2D1A57', bg: '#D4C6E8', border: '#7B5EAD', emoji: '💜' },
 }
 
 export const SAMPLE_DATA = [

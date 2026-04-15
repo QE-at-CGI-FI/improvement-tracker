@@ -3,23 +3,23 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: #f0f2f5;
-  color: #1a1a2e;
+  color: #2D1A57;
   min-height: 100vh;
 }
 
 :root {
-  --red: #e53e3e;
+  --red: #E31937;
   --yellow: #d69e2e;
   --green: #38a169;
-  --red-bg: #fff5f5;
+  --red-bg: #FEF2F4;
   --yellow-bg: #fffff0;
   --green-bg: #f0fff4;
-  --red-border: #fc8181;
+  --red-border: #F5A3B1;
   --yellow-border: #f6e05e;
   --green-border: #68d391;
   --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
   --shadow-lg: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
   --radius: 8px;
-  --primary: #4f46e5;
-  --primary-hover: #4338ca;
+  --primary: #4C2C92;
+  --primary-hover: #3B2175;
 }

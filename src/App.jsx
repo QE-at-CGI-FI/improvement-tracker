@@ -251,13 +251,13 @@ export default function App() {
                   </td>
                   <td style={s.td}>
                     {item.area && <span style={s.tag}>{item.area}</span>}
-                    {item.subarea && <span style={{ ...s.tag, background: '#eef2ff', color: '#4f46e5' }}>{item.subarea}</span>}
+                    {item.subarea && <span style={{ ...s.tag, background: '#F3F0F9', color: '#4C2C92' }}>{item.subarea}</span>}
                   </td>
                   <td style={s.td}>
                     {item.businessArea && <span style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>{item.businessArea}</span>}
                   </td>
                   <td style={s.td}>
-                    {item.responsibility && <span style={{ ...s.tag, background: '#ede9fe', color: '#5b21b6' }}>{item.responsibility}</span>}
+                    {item.responsibility && <span style={{ ...s.tag, background: '#E8E0F3', color: '#4C2C92' }}>{item.responsibility}</span>}
                   </td>
                   <td style={s.tdCenter}>
                     <StatusBadge cfg={cfg} />
@@ -285,7 +285,7 @@ export default function App() {
                       <button style={s.iconBtn} title="Move up" onClick={() => moveUp(item.id)} disabled={item.priority === 1}>↑</button>
                       <button style={s.iconBtn} title="Move down" onClick={() => moveDown(item.id)} disabled={item.priority === maxPriority}>↓</button>
                       <button style={s.iconBtn} title="Edit" onClick={() => setModal(item)}>✎</button>
-                      <button style={{ ...s.iconBtn, color: '#e53e3e' }} title="Delete" onClick={() => setConfirmDelete(item)}>✕</button>
+                      <button style={{ ...s.iconBtn, color: '#E31937' }} title="Delete" onClick={() => setConfirmDelete(item)}>✕</button>
                     </div>
                   </td>
                 </tr>
@@ -368,14 +368,14 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 20 }}>
             <StatusBadge cfg={cfg} />
             {item.area && <span style={s.tag}>{item.area}</span>}
-            {item.subarea && <span style={{ ...s.tag, background: '#eef2ff', color: '#4f46e5' }}>{item.subarea}</span>}
+            {item.subarea && <span style={{ ...s.tag, background: '#F3F0F9', color: '#4C2C92' }}>{item.subarea}</span>}
             {item.businessArea && <span style={{ ...s.tag, background: '#fef3c7', color: '#92400e' }}>Biz: {item.businessArea}</span>}
-            {item.responsibility && <span style={{ ...s.tag, background: '#ede9fe', color: '#5b21b6' }}>Owner: {item.responsibility}</span>}
+            {item.responsibility && <span style={{ ...s.tag, background: '#E8E0F3', color: '#4C2C92' }}>Owner: {item.responsibility}</span>}
           </div>
 
           {item.tagline && (
-            <div style={{ marginBottom: 16, padding: '10px 14px', background: '#f8fafc', borderLeft: '3px solid #4f46e5', borderRadius: 4 }}>
-              <p style={{ fontSize: 14, color: '#4f46e5', fontStyle: 'italic', fontWeight: 500 }}>{item.tagline}</p>
+            <div style={{ marginBottom: 16, padding: '10px 14px', background: '#f8fafc', borderLeft: '3px solid #4C2C92', borderRadius: 4 }}>
+              <p style={{ fontSize: 14, color: '#4C2C92', fontStyle: 'italic', fontWeight: 500 }}>{item.tagline}</p>
             </div>
           )}
 
@@ -434,18 +434,18 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
 
 const s = {
   app: { minHeight: '100vh', display: 'flex', flexDirection: 'column' },
-  header: { background: '#1a1a2e', color: '#fff', padding: '20px 0' },
+  header: { background: '#2D1A57', color: '#fff', padding: '20px 0' },
   headerInner: { maxWidth: 1400, margin: '0 auto', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
   h1: { fontSize: 24, fontWeight: 800, letterSpacing: '-0.5px' },
-  subtitle: { fontSize: 13, color: '#94a3b8', marginTop: 4 },
-  newBtn: { background: '#4f46e5', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 14, fontWeight: 700, cursor: 'pointer' },
-  exportBtn: { background: 'none', color: '#94a3b8', border: '1.5px solid #334155', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer' },
-  importBtn: { background: 'none', color: '#94a3b8', border: '1.5px solid #334155', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'inline-block' },
+  subtitle: { fontSize: 13, color: '#B89CD9', marginTop: 4 },
+  newBtn: { background: '#E31937', color: '#fff', border: 'none', borderRadius: 8, padding: '10px 20px', fontSize: 14, fontWeight: 700, cursor: 'pointer' },
+  exportBtn: { background: 'none', color: '#B89CD9', border: '1.5px solid #7B5EAD', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer' },
+  importBtn: { background: 'none', color: '#B89CD9', border: '1.5px solid #7B5EAD', borderRadius: 8, padding: '9px 16px', fontSize: 14, fontWeight: 600, cursor: 'pointer', display: 'inline-block' },
 
   filtersBar: { background: '#fff', borderBottom: '1px solid #e2e8f0', padding: '12px 24px', display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center', maxWidth: '100%' },
   search: { padding: '8px 14px', border: '1.5px solid #e2e8f0', borderRadius: 6, fontSize: 14, minWidth: 200, outline: 'none' },
   select: { padding: '8px 12px', border: '1.5px solid #e2e8f0', borderRadius: 6, fontSize: 13, color: '#4a5568', background: '#fff', cursor: 'pointer', outline: 'none' },
-  clearBtn: { padding: '8px 14px', background: '#fee2e2', color: '#c53030', border: '1.5px solid #fca5a5', borderRadius: 6, fontSize: 13, cursor: 'pointer', fontWeight: 600 },
+  clearBtn: { padding: '8px 14px', background: '#FEF2F4', color: '#E31937', border: '1.5px solid #F5A3B1', borderRadius: 6, fontSize: 13, cursor: 'pointer', fontWeight: 600 },
 
   statsBar: { maxWidth: '100%', padding: '10px 24px', display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', background: '#f8fafc', borderBottom: '1px solid #e2e8f0' },
   statChip: { display: 'flex', alignItems: 'center', gap: 6, padding: '5px 14px', border: '1.5px solid', borderRadius: 20, fontSize: 13, cursor: 'pointer', fontWeight: 500 },
@@ -459,16 +459,16 @@ const s = {
   tdCenter: { padding: '14px 14px', verticalAlign: 'middle', textAlign: 'center', fontSize: 14 },
   empty: { textAlign: 'center', padding: 48, color: '#a0aec0', fontSize: 15 },
 
-  priority: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, borderRadius: '50%', background: '#1a1a2e', color: '#fff', fontSize: 12, fontWeight: 700 },
-  priorityLarge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', background: '#1a1a2e', color: '#fff', fontSize: 14, fontWeight: 700 },
+  priority: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 28, height: 28, borderRadius: '50%', background: '#4C2C92', color: '#fff', fontSize: 12, fontWeight: 700 },
+  priorityLarge: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 36, height: 36, borderRadius: '50%', background: '#4C2C92', color: '#fff', fontSize: 14, fontWeight: 700 },
 
-  titleBtn: { background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#1a1a2e', textAlign: 'left', padding: 0, display: 'block' },
-  tagline: { fontSize: 12, color: '#4f46e5', fontStyle: 'italic', marginTop: 3, lineHeight: 1.4 },
+  titleBtn: { background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: '#2D1A57', textAlign: 'left', padding: 0, display: 'block' },
+  tagline: { fontSize: 12, color: '#4C2C92', fontStyle: 'italic', marginTop: 3, lineHeight: 1.4 },
   desc: { fontSize: 12, color: '#718096', marginTop: 2, lineHeight: 1.5 },
 
   tag: { display: 'inline-block', fontSize: 11, fontWeight: 600, background: '#f1f5f9', color: '#475569', borderRadius: 4, padding: '2px 8px', marginRight: 4, marginBottom: 4 },
 
-  reqCount: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, borderRadius: '50%', background: '#eef2ff', color: '#4f46e5', fontSize: 12, fontWeight: 700 },
+  reqCount: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, borderRadius: '50%', background: '#F3F0F9', color: '#4C2C92', fontSize: 12, fontWeight: 700 },
 
   actions: { display: 'flex', gap: 4, justifyContent: 'center' },
   iconBtn: { background: 'none', border: 'none', cursor: 'pointer', fontSize: 15, color: '#718096', padding: '4px 6px', borderRadius: 4, transition: 'background 0.1s' },
@@ -482,6 +482,6 @@ const s = {
 
   confirmBox: { background: '#fff', borderRadius: 12, padding: 28, maxWidth: 420, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.3)' },
   cancelBtn: { padding: '10px 20px', background: 'none', border: '1.5px solid #e2e8f0', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600, color: '#718096' },
-  editBtn: { padding: '10px 24px', background: '#4f46e5', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600 },
-  deleteBtn: { padding: '10px 20px', background: '#fff5f5', color: '#e53e3e', border: '1.5px solid #fc8181', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600 },
+  editBtn: { padding: '10px 24px', background: '#4C2C92', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600 },
+  deleteBtn: { padding: '10px 20px', background: '#FEF2F4', color: '#E31937', border: '1.5px solid #F5A3B1', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600 },
 }

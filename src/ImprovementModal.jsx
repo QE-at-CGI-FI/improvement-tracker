@@ -218,7 +218,7 @@ const styles = {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
     padding: '20px 24px', borderBottom: '1px solid #e2e8f0',
   },
-  title: { fontSize: 18, fontWeight: 700, color: '#1a1a2e' },
+  title: { fontSize: 18, fontWeight: 700, color: '#2D1A57' },
   closeBtn: {
     background: 'none', border: 'none', cursor: 'pointer',
     fontSize: 18, color: '#718096', padding: 4,
@@ -228,7 +228,7 @@ const styles = {
   label: { display: 'block', fontSize: 13, fontWeight: 600, color: '#4a5568', marginBottom: 6 },
   input: {
     width: '100%', padding: '8px 12px', border: '1.5px solid #e2e8f0', borderRadius: 6,
-    fontSize: 14, color: '#1a1a2e', outline: 'none', transition: 'border-color 0.15s',
+    fontSize: 14, color: '#2D1A57', outline: 'none', transition: 'border-color 0.15s',
     fontFamily: 'inherit',
   },
   statusRow: { display: 'flex', gap: 12 },
@@ -259,8 +259,8 @@ const styles = {
     borderBottom: '1px solid #f1f5f9',
   },
   addReqBtn: {
-    padding: '8px 16px', background: '#eef2ff', color: '#4f46e5',
-    border: '1.5px solid #c7d2fe', borderRadius: 6, cursor: 'pointer',
+    padding: '8px 16px', background: '#F3F0F9', color: '#4C2C92',
+    border: '1.5px solid #D4C6E8', borderRadius: 6, cursor: 'pointer',
     fontSize: 14, fontWeight: 600,
   },
   footer: {
@@ -272,7 +272,7 @@ const styles = {
     borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600, color: '#718096',
   },
   saveBtn: {
-    padding: '10px 24px', background: '#4f46e5', color: '#fff',
+    padding: '10px 24px', background: '#4C2C92', color: '#fff',
     border: 'none', borderRadius: 6, cursor: 'pointer', fontSize: 14, fontWeight: 600,
   },
 }
