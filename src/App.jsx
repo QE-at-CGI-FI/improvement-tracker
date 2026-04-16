@@ -470,7 +470,7 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
                   return (
                     <li key={i} style={s.reqItem}>
                       <span style={{ fontSize: 13, fontWeight: 700, color: accepted ? '#166534' : '#94a3b8', flexShrink: 0 }}>{accepted ? '✓' : '○'}</span>
-                      <span style={{ fontSize: 14, textDecoration: accepted ? 'line-through' : 'none', color: accepted ? '#94a3b8' : 'inherit' }}>{text}</span>
+                      <span style={{ fontSize: 14, fontWeight: accepted ? 700 : 'normal', color: accepted ? '#166534' : 'inherit' }}>{text}</span>
                     </li>
                   )
                 })}

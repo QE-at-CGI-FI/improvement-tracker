@@ -159,7 +159,7 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
                     >
                       {r.accepted ? '✓' : '○'}
                     </button>
-                    <span style={{ flex: 1, textDecoration: r.accepted ? 'line-through' : 'none', color: r.accepted ? '#94a3b8' : 'inherit' }}>{r.text}</span>
+                    <span style={{ flex: 1, fontWeight: r.accepted ? 700 : 'normal', color: r.accepted ? '#166534' : 'inherit' }}>{r.text}</span>
                     <button type="button" style={styles.reqRemove} onClick={() => removeReq(i)}>✕</button>
                   </div>
                 ))}
