@@ -10,6 +10,7 @@ const EMPTY = {
   status: 'listed',
   businessArea: [],
   responsibility: '',
+  contract: '',
   requirements: [],
   dependencies: [],
 }
@@ -129,6 +130,10 @@ export default function ImprovementModal({ item, maxPriority, allItems, onSave, 
             </Field>
             <Field label="Organizational Responsibility">
               <input style={styles.input} value={form.responsibility} onChange={e => set('responsibility', e.target.value)} placeholder="e.g. Platform Team" />
+            </Field>
+
+            <Field label="Contract" span={2}>
+              <input style={styles.input} value={form.contract || ''} onChange={e => set('contract', e.target.value)} placeholder="Contract or agreement covering invoicing for this item" />
             </Field>
 
             <Field label="Status" span={2}>

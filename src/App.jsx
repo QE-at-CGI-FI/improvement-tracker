@@ -179,6 +179,7 @@ export default function App() {
         'Requirements': reqs.join('\n'),
         'Requirements Total': (item.requirements || []).length,
         'Requirements Accepted': acceptedCount,
+        'Contract': item.contract || '',
         'Dependencies': deps.join('\n'),
         'Created': item.createdAt || '',
       }
@@ -199,6 +200,7 @@ export default function App() {
       { wch: 50 }, // Requirements
       { wch: 10 }, // Requirements Total
       { wch: 10 }, // Requirements Accepted
+      { wch: 30 }, // Contract
       { wch: 40 }, // Dependencies
       { wch: 12 }, // Created
     ]
@@ -212,9 +214,12 @@ export default function App() {
       {/* Header */}
       <header style={s.header}>
         <div style={s.headerInner}>
-          <div>
-            <h1 style={s.h1}>Improvement Backlog</h1>
-            <p style={s.subtitle}>{items.length} improvements tracked · sorted by absolute priority</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <img src="/logo.svg" alt="CGI" style={{ height: 40 }} />
+            <div>
+              <h1 style={s.h1}>Improvement Backlog</h1>
+              <p style={s.subtitle}>{items.length} improvements tracked · sorted by absolute priority</p>
+            </div>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <button style={s.exportBtn} onClick={handleExportExcel}>↓ Export Excel</button>
@@ -287,6 +292,7 @@ export default function App() {
               <th style={{ ...s.th, width: 120 }}>Business Area</th>
               <th style={{ ...s.th, width: 140 }}>Responsibility</th>
               <th style={{ ...s.th, width: 110 }}>Status</th>
+              <th style={{ ...s.th, width: 70 }}>Contract</th>
               <th style={{ ...s.th, width: 90 }}>Reqs</th>
               <th style={{ ...s.th, width: 90 }}>Blocked by</th>
               <th style={{ ...s.th, width: 90 }}>Actions</th>
@@ -294,7 +300,7 @@ export default function App() {
           </thead>
           <tbody>
             {filtered.length === 0 && (
-              <tr><td colSpan={9} style={s.empty}>No improvements match the current filters.</td></tr>
+              <tr><td colSpan={10} style={s.empty}>No improvements match the current filters.</td></tr>
             )}
             {filtered.map((item, idx) => {
               const cfg = STATUS_CONFIG[item.status]
@@ -333,6 +339,11 @@ export default function App() {
                   </td>
                   <td style={s.tdCenter}>
                     <StatusBadge cfg={cfg} />
+                  </td>
+                  <td style={s.tdCenter}>
+                    {item.contract && (
+                      <span title={item.contract} style={{ fontSize: 16, color: '#16a34a', cursor: 'default' }}>✓</span>
+                    )}
                   </td>
                   <td style={s.tdCenter}>
                     {item.requirements.length > 0 && (
@@ -446,6 +457,13 @@ function DetailPanel({ item, allItems, onEdit, onDelete, onClose }) {
             ))}
             {item.responsibility && <span style={{ ...s.tag, background: '#E8E0F3', color: '#4C2C92' }}>Owner: {item.responsibility}</span>}
           </div>
+
+          {item.contract && (
+            <div style={{ marginBottom: 16, padding: '10px 14px', background: '#f0fdf4', borderLeft: '3px solid #16a34a', borderRadius: 4 }}>
+              <h4 style={{ ...s.sectionLabel, color: '#166534', marginBottom: 4 }}>Contract</h4>
+              <p style={{ fontSize: 14, color: '#166534' }}>{item.contract}</p>
+            </div>
+          )}
 
           {item.tagline && (
             <div style={{ marginBottom: 16, padding: '10px 14px', background: '#f8fafc', borderLeft: '3px solid #4C2C92', borderRadius: 4 }}>
